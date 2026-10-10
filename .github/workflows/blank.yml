@@ -6,8 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: pwd
-      - run: ls
-  job2:
-    runs-on: windows-latest
-    steps:
+      - run: npm -v
       - run: node -v
+      - run: npm install
+      - run: npm run build
