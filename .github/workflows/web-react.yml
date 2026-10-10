@@ -1,6 +1,17 @@
 
 name: React 项目工作流
-on: push
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -14,6 +25,9 @@ jobs:
     steps:
       - name: 检出代码
         uses: actions/checkout@v7
+
+      - name: 配置 GitHub Pages
+        uses: actions/configure-pages@v5
         
       - name: 设置 Node.js 环境
         uses: actions/setup-node@v7
@@ -26,3 +40,23 @@ jobs:
         run: |
           npm ci
           npm run build
+
+      - name: 上传 Pages 构建产物
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: web-react/dist
+
+  deploy:
+    name: 部署到 GitHub Pages
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: 部署站点
+        id: deployment
+        uses: actions/deploy-pages@v4
