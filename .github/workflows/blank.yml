@@ -5,6 +5,7 @@ jobs:
   job1:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v7
       - run: pwd
       - run: npm -v
       - run: node -v
