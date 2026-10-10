@@ -1,6 +1,5 @@
 
 name: React 项目工作流
-
 on: push
 
 jobs:
@@ -23,8 +22,7 @@ jobs:
           cache: npm
           cache-dependency-path: web-react/package-lock.json
 
-      - name: 安装依赖
-        run: npm ci
-        
-      - name: 构建项目
-        run: npm run build
+      - name: 安装依赖、构建项目
+        run: |
+          npm ci
+          npm run build
