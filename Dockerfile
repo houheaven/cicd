@@ -1,5 +1,7 @@
 
-FROM anolis-registry.cn-zhangjiakou.cr.aliyuncs.com/openanolis/openresty-accel
+FROM nginx:stable-alpine-slim
+
+COPY . .
 
 EXPOSE 80
 
