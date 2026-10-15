@@ -51,7 +51,7 @@ jobs:
           image="$Aliyun_Docker_Image"
 
           docker buildx build \
-          --platform linux/amd64 \
+          --platform linux/amd64,linux/arm64 \
           --tag "$image:$GITHUB_REF_NAME" \
           --tag "$image:v$major.$minor" \
           --tag "$image:v$major" \
