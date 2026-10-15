@@ -59,6 +59,8 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           provenance: false
+      
+      - name: 打印镜像标签和元数据
         run: |
           echo ${{ steps.metadata.outputs.tags }}
           echo ${{ steps.metadata.outputs.labels }}
