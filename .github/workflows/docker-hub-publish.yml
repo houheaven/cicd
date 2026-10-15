@@ -15,7 +15,6 @@ env:
   Docker_Hub_Username: ${{ secrets.DOCKER_HUB_USERNAME }}
   Docker_Hub_Password: ${{ secrets.DOCKER_HUB_TOKEN }}
   Docker_Hub_Image: ${{ secrets.DOCKER_HUB_USERNAME }}/hh-cicd-web-react
-  # Docker_Tag: ${{ github.ref_name || 'latest' }}
 
 jobs:
   docker:
@@ -59,18 +58,3 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           provenance: false
-      
-      - name: 打印镜像标签和元数据
-        run: |
-          echo "==================================="
-          echo "镜像标签:"
-          echo ${{ steps.metadata.outputs.tags }}
-          echo "镜像元数据:"
-          echo ${{ steps.metadata.outputs.labels }}
-          echo "镜像版本:"
-          echo ${{ steps.metadata.outputs.version }}
-          echo "镜像主版本:"
-          echo ${{ steps.metadata.outputs.major }}
-          echo "镜像次版本:"
-          echo ${{ steps.metadata.outputs.minor }}
-          echo "==================================="
