@@ -1,5 +1,6 @@
 
 name: 发布 React 项目镜像到 Aliyun Docker
+run-name: 发布 React 项目镜像到 Aliyun Docker
 
 on:
   push:

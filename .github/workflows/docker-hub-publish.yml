@@ -1,5 +1,6 @@
 
 name: 发布 React 项目镜像到 Docker Hub
+run-name: 发布 React 项目镜像到 Docker Hub
 
 on:
   push:
@@ -49,7 +50,7 @@ jobs:
           context: ./web-react
           file: ./web-react/docker/Dockerfile
           platforms: linux/amd64,linux/arm64
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           tags: ${{ steps.metadata.outputs.tags }}
           labels: ${{ steps.metadata.outputs.labels }}
           cache-from: type=gha
