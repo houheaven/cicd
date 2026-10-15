@@ -30,7 +30,7 @@ jobs:
           region-id: ${{ secrets.ALIYUN_DOCKER_REGION_ID }}
           access-key-id: ${{ secrets.ALIYUN_DOCKER_ACCESS_KEY_ID }}
           access-key-secret: ${{ secrets.ALIYUN_DOCKER_ACCESS_KEY_SECRET }}
-          instance-id: ${{ secrets.ALIYUN_DOCKER_IMAGE }}
+          # instance-id: ${{ secrets.ALIYUN_DOCKER_IMAGE }}
 
       # - name: 生成镜像标签和元数据
       #   id: metadata
