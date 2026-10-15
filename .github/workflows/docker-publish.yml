@@ -24,7 +24,7 @@ jobs:
 
       - name: 登录 Aliyun Docker
         if: github.event_name != 'pull_request'
-        uses: aliyun/acr-login@v1
+        uses: aliyun/acr-login@v2.0.3
         with:
           login-server: ${{ secrets.ALIYUN_DOCKER_URL }}
           region-id: ${{ secrets.ALIYUN_DOCKER_REGION_ID }}
