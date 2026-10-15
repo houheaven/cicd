@@ -28,8 +28,8 @@ jobs:
         with:
           login-server: ${{ secrets.ALIYUN_DOCKER_URL }}
           region-id: ${{ secrets.ALIYUN_DOCKER_REGION_ID }}
-          access-key-id: ${{ secrets.ALIYUN_DOCKER_ACCESS_KEY_ID }}
-          access-key-secret: ${{ secrets.ALIYUN_DOCKER_ACCESS_KEY_SECRET }}
+          access-username: ${{ secrets.ALIYUN_DOCKER_USERNAME }}
+          access-password: ${{ secrets.ALIYUN_DOCKER_PASSWORD }}
           # instance-id: ${{ secrets.ALIYUN_DOCKER_IMAGE }}
 
       # - name: 生成镜像标签和元数据
