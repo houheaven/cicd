@@ -40,9 +40,12 @@ jobs:
         uses: docker/metadata-action@v6
         with:
           images: ${{ env.Docker_Hub_Image }}
+          flavor: |
+            latest=auto
           tags: |
-            type=raw,value=latest,enable={{is_default_branch}}
             type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
 
       - name: 构建并推送镜像
         uses: docker/build-push-action@v7
@@ -56,3 +59,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           provenance: false
+        run: |
+          echo ${{ steps.metadata.outputs.tags }}
+          echo ${{ steps.metadata.outputs.labels }}
