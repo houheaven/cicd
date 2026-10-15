@@ -10,6 +10,14 @@ on:
 permissions:
   contents: read
 
+env:
+  Aliyun_Docker_Login_Server: https://registry.cn-shanghai.aliyuncs.com
+  Aliyun_Docker_Region_Id: cn-shanghai
+  Aliyun_Docker_Username: ${{ secrets.ALIYUN_DOCKER_USERNAME }}
+  Aliyun_Docker_Password: ${{ secrets.ALIYUN_DOCKER_PASSWORD }}
+  Aliyun_Docker_Image: registry.cn-shanghai.aliyuncs.com/houheaven-docker-hub/hh-cicd-web-react
+  Aliyun_Docker_Tag: ${{ github.ref_name || "latest" }}
+
 jobs:
   docker:
     name: 构建并发布 Docker 镜像
@@ -25,17 +33,17 @@ jobs:
         if: github.ref_type == 'tag'
         uses: aliyun/acr-login@v2.0.3
         with:
-          login-server: https://registry.cn-shanghai.aliyuncs.com
-          region-id: cn-shanghai
-          username: ${{ secrets.ALIYUN_DOCKER_USERNAME }}
-          password: ${{ secrets.ALIYUN_DOCKER_PASSWORD }}
+          login-server: ${{ env.Aliyun_Docker_Login_Server }}
+          region-id: ${{ env.Aliyun_Docker_Region_Id }}
+          username: ${{ env.Aliyun_Docker_Username }}
+          password: ${{ env.Aliyun_Docker_Password }}
 
       - name: 构建并推送镜像
         if: github.ref_type == 'tag'
         run: |
           docker buildx build \
           --platform linux/amd64 \
-          --tag registry.cn-shanghai.aliyuncs.com/houheaven-docker-hub/hh-cicd-web-react:${{ github.ref_name || 'latest' }} \
+          --tag ${{ env.Aliyun_Docker_Image }}:${{ env.Aliyun_Docker_Tag }} \
           --cache-from type=gha \
           --cache-to type=gha,mode=max \
           --provenance=false \
