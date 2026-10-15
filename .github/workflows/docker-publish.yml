@@ -36,7 +36,7 @@ jobs:
         run: |
           docker buildx build \
           --platform linux/amd64 \
-          --tag registry.cn-shanghai.aliyuncs.com/houheaven-docker-hub/hh-cicd-web-react:${{ github.ref_type == 'tag' && github.ref_name || latest }} \
+          --tag registry.cn-shanghai.aliyuncs.com/houheaven-docker-hub/hh-cicd-web-react:${{ github.ref_name || 'latest' }} \
           --cache-from type=gha \
           --cache-to type=gha,mode=max \
           --provenance=false \
