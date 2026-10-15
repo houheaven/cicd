@@ -16,7 +16,7 @@ env:
   Aliyun_Docker_Username: ${{ secrets.ALIYUN_DOCKER_USERNAME }}
   Aliyun_Docker_Password: ${{ secrets.ALIYUN_DOCKER_PASSWORD }}
   Aliyun_Docker_Image: registry.cn-shanghai.aliyuncs.com/houheaven-docker-hub/hh-cicd-web-react
-  Aliyun_Docker_Tag: ${{ github.ref_name || "latest" }}
+  Aliyun_Docker_Tag: ${{ github.ref_name || 'latest' }}
 
 jobs:
   docker:
