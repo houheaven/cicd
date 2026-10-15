@@ -44,6 +44,7 @@ jobs:
           docker buildx build \
           --platform linux/amd64 \
           --tag ${{ env.Aliyun_Docker_Image }}:${{ env.Aliyun_Docker_Tag }} \
+          --tag ${{ env.Aliyun_Docker_Image }}:latest \
           --cache-from type=gha \
           --cache-to type=gha,mode=max \
           --provenance=false \
