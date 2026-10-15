@@ -17,7 +17,6 @@ env:
   Aliyun_Docker_Username: ${{ secrets.ALIYUN_DOCKER_USERNAME }}
   Aliyun_Docker_Password: ${{ secrets.ALIYUN_DOCKER_PASSWORD }}
   Aliyun_Docker_Image: registry.cn-shanghai.aliyuncs.com/houheaven-docker-hub/hh-cicd-web-react
-  Aliyun_Docker_Tag: ${{ github.ref_name || 'latest' }}
 
 jobs:
   docker:
@@ -39,27 +38,53 @@ jobs:
           username: ${{ env.Aliyun_Docker_Username }}
           password: ${{ env.Aliyun_Docker_Password }}
 
+      - name: 生成镜像标签和元数据
+        id: metadata
+        uses: docker/metadata-action@v6
+        with:
+          images: ${{ env.Aliyun_Docker_Image }}
+          flavor: |
+            latest=auto
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+
       - name: 构建并推送镜像
         if: github.ref_type == 'tag'
-        run: |
-          if [[ ! "$GITHUB_REF_NAME" =~ ^v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
-            echo "Tag 必须采用 v主版本.次版本.修订版本 格式"
-            exit 1
-          fi
+        uses: docker/build-push-action@v7
+        with:
+          context: ./web-react
+          file: ./web-react/docker/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.metadata.outputs.tags }}
+          labels: ${{ steps.metadata.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: false
 
-          major="${BASH_REMATCH[1]}"
-          minor="${BASH_REMATCH[2]}"
-          image="$Aliyun_Docker_Image"
+      # - name: 构建并推送镜像
+      #   if: github.ref_type == 'tag'
+      #   run: |
+      #     if [[ ! "$GITHUB_REF_NAME" =~ ^v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+      #       echo "Tag 必须采用 v主版本.次版本.修订版本 格式"
+      #       exit 1
+      #     fi
 
-          docker buildx build \
-          --platform linux/amd64,linux/arm64 \
-          --tag "$image:$GITHUB_REF_NAME" \
-          --tag "$image:v$major.$minor" \
-          --tag "$image:v$major" \
-          --tag "$image:latest" \
-          --cache-from type=gha \
-          --cache-to type=gha,mode=max \
-          --provenance=false \
-          --push \
-          --file ./web-react/docker/Dockerfile \
-          ./web-react
+      #     major="${BASH_REMATCH[1]}"
+      #     minor="${BASH_REMATCH[2]}"
+      #     image="$Aliyun_Docker_Image"
+
+      #     docker buildx build \
+      #     --platform linux/amd64,linux/arm64 \
+      #     --tag "$image:$GITHUB_REF_NAME" \
+      #     --tag "$image:v$major.$minor" \
+      #     --tag "$image:v$major" \
+      #     --tag "$image:latest" \
+      #     --cache-from type=gha \
+      #     --cache-to type=gha,mode=max \
+      #     --provenance=false \
+      #     --push \
+      #     --file ./web-react/docker/Dockerfile \
+      #     ./web-react
